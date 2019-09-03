@@ -13,15 +13,15 @@ def fillZeros(size):
 
     return lista
 
-def countRepetitions(book,abecedary):
+def countRepetitions(book,alphabet):
     
-    size = len(abecedary)
+    size = len(alphabet)
     bookSize = len(book)
     ABC_Cont = fillZeros(size)
 
     for i in range(size):
         rep = 0
-        current_symbol = abecedary[i]
+        current_symbol = alphabet[i]
         for j in range(bookSize):
             symbol = book[j] 
             if symbol == current_symbol:
@@ -30,17 +30,13 @@ def countRepetitions(book,abecedary):
     
     return ABC_Cont
 
-if __name__== "__main__":
-    book = read_book("./books/libro1.txt")
-    bookSize = len(book) 
+def entropyWithoutMemory(book, alphabet):
+    list_count = countRepetitions(book, alphabet)
+    sizeAlphabet = len(alphabet)
+    Probability = fillZeros(sizeAlphabet)
+    Information = fillZeros(sizeAlphabet)
 
-    ABC=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',' ']
-    list_count = countRepetitions(book, ABC)
-    Probability = fillZeros(len(ABC))
-    Information = fillZeros(len(ABC))
-
-
-    for i in range(len(ABC)):
+    for i in range(sizeAlphabet):
         p_temp = list_count[i]/sum(list_count)
         Probability[i] = p_temp
         if p_temp != 0:
@@ -54,8 +50,14 @@ if __name__== "__main__":
     
     H = sum(h)
 
-    print(Probability)
-    print(Information)
-    print(H)
+    return [Probability,Information,H]
+
+if __name__== "__main__":
+    book = read_book("./books/libro1.txt")
+    bookSize = len(book) 
+
+    ABC=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',' ']
+    
+    Probability, Information, H = entropyWithoutMemory(book, ABC)
     
     
