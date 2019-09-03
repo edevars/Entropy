@@ -1,4 +1,6 @@
 from math import log2
+import matplotlib.pyplot as plt
+import numpy as np
 
 def read_book(url):
     file = open(url,"r")
@@ -13,15 +15,15 @@ def fillZeros(size):
 
     return lista
 
-def countRepetitions(book,alphabet):
+def countRepetitions(book,alphabeat):
     
-    size = len(alphabet)
+    size = len(alphabeat)
     bookSize = len(book)
     ABC_Cont = fillZeros(size)
 
     for i in range(size):
         rep = 0
-        current_symbol = alphabet[i]
+        current_symbol = alphabeat[i]
         for j in range(bookSize):
             symbol = book[j] 
             if symbol == current_symbol:
@@ -30,9 +32,9 @@ def countRepetitions(book,alphabet):
     
     return ABC_Cont
 
-def entropyWithoutMemory(book, alphabet):
-    list_count = countRepetitions(book, alphabet)
-    sizeAlphabet = len(alphabet)
+def entropyWithoutMemory(book, alphabeat):
+    list_count = countRepetitions(book, alphabeat)
+    sizeAlphabet = len(alphabeat)
     Probability = fillZeros(sizeAlphabet)
     Information = fillZeros(sizeAlphabet)
 
@@ -52,12 +54,35 @@ def entropyWithoutMemory(book, alphabet):
 
     return [Probability,Information,H]
 
+def plot_bar_Probabilities(alphabeat,probabilities):
+    # this is for plotting purpose
+    index = np.arange(len(alphabeat))
+    plt.figure(1)
+    plt.bar(index, probabilities)
+    plt.xlabel('Symbol', fontsize=12)
+    plt.ylabel('Probability', fontsize=12)
+    plt.xticks(index, alphabeat, fontsize=10)
+    plt.title('Probabilidades')
+
+def plot_bar_Information(alphabeat,Information):
+    # this is for plotting purpose
+    plt.figure(2)
+    index = np.arange(len(alphabeat))
+    plt.bar(index, Information)
+    plt.xlabel('Symbol', fontsize=12)
+    plt.ylabel('Information', fontsize=12)
+    plt.xticks(index, alphabeat, fontsize=10)
+    plt.title('Información por simbolo')
+
 if __name__== "__main__":
     book = read_book("./books/libro1.txt")
     bookSize = len(book) 
 
-    ABC=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',' ']
+    ABC=['a','b','c','d','e','f','g','h','i','l','m','n','o','p','q','r','s','t','u','v','z',' ']
     
     Probability, Information, H = entropyWithoutMemory(book, ABC)
+    plot_bar_Probabilities(ABC, Probability)
+    plot_bar_Information(ABC, Information)
+    plt.show()
     
     
